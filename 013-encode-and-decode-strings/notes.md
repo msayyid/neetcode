@@ -12,6 +12,10 @@
 
 *On slicing cost:* Slices are not O(1) but they don't make the solution O(N²) either. Because `ptr` jumps forward by exactly `num_rep` after each slice, no character is ever visited twice. The total work across all slices adds up to O(N).
 
-*Complexities:* Time **O(N)**, Space **O(N)** — N being total characters across all strings. `temp_str` is O(1) since max string length is bounded at 200.
+*Complexities:*
+- **Time: O(m)** — m being total characters across all strings. Every character is visited a constant number of times and cannot be avoided.
+- **Space: O(m+n)** — not just O(m). The encoded string doesn't only contain the original characters — it also adds a length number and a `#` for **every string**. If there are `n` strings, that's `n` extra pieces of overhead on top of the `m` characters. For example `["a", "b", "c"]` encodes to `"1#a1#b1#c"` — 9 characters for only 3 original characters. So space is O(m+n) where m is total characters and n is number of strings.
 
-*Is this optimal?* Yes — since every character must be visited at least once to encode and decode correctly, O(N) time is the best possible. You cannot do better.
+*Is this optimal?* Yes — since every character must be visited at least once to encode and decode correctly, O(m) time is the best possible. You cannot do better.
+
+*Clean code matters in interviews:* `for s in strs` is more pythonic than `range(len(strs))`. Unnecessary guards like `if strs:` signal lack of confidence — if the list is empty the loop just doesn't run naturally. Clean code separates a hire from a strong hire.
