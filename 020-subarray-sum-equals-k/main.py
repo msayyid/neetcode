@@ -21,13 +21,12 @@ class Solution:
 # On time On space
 class Solution:
     def subarraySum(self, nums: List[int], k: int) -> int:
-        my_map = dict()
-        my_map[0] = 1
-        prefix = 0
-        count = 0
+        my_map = {0: 1}  # 0:1 represents curSum before loop starts, so we don't miss subarrays starting from index 0
+        cur_sum = 0  # keeps record of prefixes
+        res = 0  # actual count
         for num in nums:
-            prefix += num
-            if prefix - k in my_map:
-                count += my_map[prefix-k]
-            my_map[prefix] = my_map.get(prefix, 0) + 1
-        return count
+            cur_sum += num
+            diff = cur_sum - k  # look up if we have seen this before
+            res += my_map.get(diff, 0)  # how many valid starts exist for this ending
+            my_map[cur_sum] = my_map.get(cur_sum, 0) + 1  # update map after checking
+        return res
