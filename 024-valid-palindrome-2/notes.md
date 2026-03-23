@@ -2,7 +2,15 @@
 
 **Approach:** Two pointers (`l`, `r`) moving inward. Helper function `is_palindrome(s, l, r)` checks a substring with no deletions allowed.
 
-**Key insight:** When a mismatch is found, you have exactly **one deletion** to use — either skip the left character or the right. You can't peek ahead to decide which is correct, so you **try both** and return `True` if either substring is a valid palindrome.
+**Key insight:** When a mismatch is found, you have exactly **one deletion** to use — either skip the left character or the right. You can't peek ahead to decide which is correct, so you **try both** and return `True` if either substring is a valid palindrome. The very first mismatch is the only place we can make a cut — whatever we decide there determines everything.
+
+**In my own words:**
+We have `l` and `r` pointers referring to the start and end of `s`. We loop while they haven't met. If they don't match, we try two cuts — skip left (`l+1, r`) and skip right (`l, r-1`) — and send each to the helper which checks if that substring is a palindrome using the same two pointer approach but with no deletions allowed. If either returns `True`, we return `True`. If both return `False`, it means we'd need more than one deletion, so we return `False`.
+
+**Traces:**
+- `"aca"` — we never enter the if, `l` and `r` just meet, return `True`
+- `"abbadc"` — first iteration hits mismatch, `"bbadc"` is not a palindrome, `"abbad"` is not a palindrome, both `False` → return `False`
+- `"abbda"` — first iteration `'a'=='a'` passes, second iteration `l=1, r=3`, `'b'!='d'`, skip left gives `"bd"` → `False`, skip right gives `"bb"` → `True`, `False or True` → return `True`
 
 **Mistakes I made:**
 - Tried to handle the skip inline with modified pointer jumps (`r -= 2`, `l += 2`) — these don't represent skipping one character, they jump too far
