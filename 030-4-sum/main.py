@@ -54,4 +54,60 @@ class Solution:
         return res
  # two pointer approach O(n^3) time 
 
+ # recursive version kSum
  
+class Solution:
+    def fourSum(self, nums: List[int], target: int) -> List[List[int]]:
+
+        nums.sort()
+        res, quad = [], []
+
+        def k_sum(k, start, target):
+            # if k is not 2 yet, we still need to choose more numbers
+            if k != 2:
+                for i in range(start, len(nums) - k + 1):
+                    # skip duplicates at the current recursion level
+                    if i > start and nums[i] == nums[i - 1]:
+                        continue
+
+                    # choose nums[i] as one part of the current answer
+                    quad.append(nums[i])
+
+                    # we already picked nums[i], so now we need:
+                    # (k - 1) more numbers
+                    # starting only from i + 1
+                    # whose sum must be (target - nums[i])
+                    k_sum(k - 1, i + 1, target - nums[i])
+
+                    # backtrack 
+                    # remove the number we just picked
+                    # so we can try the next possible choice
+                    quad.pop()
+                
+                # important:
+                # once this recursive level finishes its loop, stop here
+                # and do not continue into the 2-pointer code below
+                return
+
+            # base case: k == 2
+            # now the problem is just 2Sum in a sorted array
+            l, r = start, len(nums) - 1
+            while l < r:
+                pair_sum = nums[l] + nums[r]
+                if pair_sum < target:
+                    l += 1
+                elif pair_sum > target:
+                    r -= 1
+                else:
+                    # quad already has the previously chosen numbers
+                    # nums[l] and nums[r] complete the combination
+                    res.append(quad + [nums[l], nums[r]])
+
+                    l += 1
+                    # skip duplicate left values
+                    while l < r and nums[l] == nums[l - 1]:
+                        l += 1
+
+        k_sum(4, 0, target)
+        return res
+
