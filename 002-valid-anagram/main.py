@@ -43,6 +43,23 @@ t = "jam"
 print(sol.isAnagram(s, t))
 
 
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+
+        if len(s) != len(t): 
+            return False
+        count = [0] * 26
+        for i in range(len(s)):
+            count[ord(s[i]) - ord('a')] += 1
+            count[ord(t[i]) - ord('a')] -=1 
+
+        for v in count:
+            if v != 0:
+                return False
+        return True
+        
+
+
 # Problem: given two strings s and t, return true if t is an anagram of s.
 
 # Approach 1 (brute force): just sort both strings and compare. 
