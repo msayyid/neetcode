@@ -95,3 +95,26 @@ class Solution:
                 ord("a") <= ord(c) <= ord("z") or
                 ord("0") <= ord(c) <= ord("9")
                 )
+
+
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        l = 0
+        r = len(s) - 1
+        while l < r:
+            # move right pointer until it hits an alnum char
+            while l < r and not s[r].isalnum():
+                r -= 1 
+            # move left pointer until it hits an alnum char
+            while l < r and not s[l].isalnum():
+                l += 1
+
+            # compare the chars (lowercase)
+            if s[l].lower() != s[r].lower():
+                return False
+            
+            # after a successful match, move both pointers inward
+            l += 1
+            r -= 1
+
+        return True
