@@ -652,3 +652,66 @@ Everything before that break is the answer.
 * The idea made partial sense, but the code felt abstract
 * Walking through `"flower", "flow", "flight"` step by step made it click
 * You realized that the column-based solution is really just checking where agreement stops across all words
+
+
+
+
+---
+---
+---
+
+## 📝 Study Notes: Vertical Scanning for LCP
+
+### 1. The Core Strategy: "The Vertical Race"
+
+Instead of comparing word A to word B, then the result to word C, this approach looks at **all words simultaneously, one character index at a time.**
+
+* **The Outer Loop (`c`):** Moves through column indices ($0, 1, 2, ...$).
+* **The Inner Loop (`i`):** Checks every word in the list at that specific index.
+
+---
+
+### 2. The "Safety First" Condition (Where you improved)
+
+The line `if c == len(strs[i]) or strs[0][c] != strs[i][c]:` is the most important part of the code. It handles two different "Stop" signals:
+
+#### **Signal A: The "Short Word" Wall (`c == len(strs[i])`)**
+
+* **The Mistake:** If you skip this, and `strs[0]` is longer than another word in the list, you will eventually ask for a character that doesn't exist (e.g., trying to get the 5th letter of a 2-letter word).
+* **The Fix:** This check stops the code the moment the current index equals the length of the word we are looking at.
+* **Key Concept:** **Short-circuiting.** Python evaluates the `or` from left to right. If `c == len(strs[i])` is **True**, Python stops and enters the `if` block immediately. It **never** executes the second half, which saves you from an `IndexError`.
+
+#### **Signal B: The Mismatch (`strs[0][c] != strs[i][c]`)**
+
+* This is the standard check. If the characters at the current column don't match, the common prefix has ended.
+
+---
+
+### 3. The Return Statement: `strs[0][:c]`
+
+* **The Logic:** We return the first word sliced up to (but not including) the index `c` where the failure happened.
+* **Why `c`?** If the mismatch or length-limit happens at index 2, it means index 0 and 1 were successful. `strs[0][:2]` gives you exactly those two characters.
+
+---
+
+### 4. The Final Return: `return strs[0]`
+
+* **The Logic:** If the loops finish without ever hitting a `return`, it means the first word (`strs[0]`) is itself the prefix for every other word in the list (e.g., `["flow", "flower", "flowing"]`).
+
+---
+
+## 🚀 Performance Summary
+
+| Metric | Analysis |
+| --- | --- |
+| **Time Complexity** | $O(S)$ where $S$ is the sum of all characters in all strings. In the best case (first letters don't match), it is $O(n)$. |
+| **Space Complexity** | $O(1)$ constant extra space (excluding the space for the output string). |
+| **Edge Case Handling** | `if not strs` handles empty input. The `len` check handles unequal string lengths. |
+
+---
+
+### Interview Tip: How to explain it
+
+*"I used a vertical scanning approach. I iterate through the characters of the first string and compare them across all other strings. I include a length check to prevent index out of bounds errors if a subsequent string is shorter than the first, and I use an early exit to return the prefix the moment a mismatch is found."*
+
+You're ready for this problem! Would you like to try a similar string-based problem, or are you moving on to a different topic?

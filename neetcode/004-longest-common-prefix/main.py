@@ -62,3 +62,14 @@ print(result)
 
 # Time: O(n * m) — n = number of strings, m = length of strings. Optimal because you must check every character at least once.
 # Space: O(m) — only storing the prefix, which is at most the length of a string
+
+
+# vertical scanning
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs: return ""
+        for c in range(len(strs[0])):
+            for i in range(len(strs)):
+                if c == len(strs[i]) or strs[0][c] != strs[i][c]:
+                    return strs[0][:c]
+        return strs[0]
