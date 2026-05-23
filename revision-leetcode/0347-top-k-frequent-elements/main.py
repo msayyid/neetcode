@@ -35,3 +35,20 @@ class Solution:
             result.append(v)
 
         return result
+    
+
+class Solution: 
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]: 
+        count = [[] for _ in range(len(nums) + 1)]
+        freq = Counter(nums) 
+        result = []
+
+        for key, val in freq.items(): 
+            count[val].append(key) 
+
+        for i in range(len(count) - 1, -1, -1):
+            for j in range(len(count[i])):
+                result.append(count[i][j])
+                if len(result) == k:
+                    return result
+        return result
