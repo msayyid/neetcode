@@ -109,8 +109,6 @@ def getLimitBreaches(    timestamps: list[int],    userIds: list[str],    action
         elif actions[i] == "logout":
             if userIds[i] in map1 and map1[userIds[i]] > 0:
                 map1[userIds[i]] -= 1
-    # print(map1)
-    # print(breached)
     return sorted(breached)
 
 line = "________________________________"
