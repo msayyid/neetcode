@@ -95,6 +95,8 @@ def findDifferentValues(json1: str, json2: str) -> list[str]:
 
     json1_map = parse_json(json1)
     json2_map = parse_json(json2)
+    # print(json1_map)
+    # print(json2_map)
 
     # print(json1_map)
     # print(json2_map)
